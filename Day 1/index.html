@@ -65,6 +65,7 @@
   
   keys.forEach(key => {
     key.addEventListener('click', playSound);
+    key.addEventListener('transitionend', endAnimation);
   });
 
   function playSound(ev) {
@@ -75,9 +76,16 @@
     const element = document.querySelector(`.key[data-key="${keyCode}"]`);
     element.classList.add('playing');
     audio.currentTime = 0;
-    audio.play();  
-    setTimeout(() => element.classList.remove('playing'), 700);
+    audio.play(); 
+     
   }
+
+  function endAnimation(ev) {
+    if(ev.propertyName !== 'transform') return;
+    ev.target.classList.remove('playing');
+    setTimeout(() => ev.target.classList.remove('playing'), 700);
+  }
+
 </script>
 
 
