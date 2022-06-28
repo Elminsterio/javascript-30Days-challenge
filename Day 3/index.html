@@ -26,6 +26,16 @@
       misc styles, nothing to do with CSS variables
     */
 
+    img {
+      padding: 10px;
+      background: #ffc600;
+      filter: blur(10px);
+    }
+
+    .hl {
+      color: #ffc600;
+    }
+
     body {
       text-align: center;
       background: #193549;
@@ -55,24 +65,15 @@
 
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
-      input.addEventListener('input', changeCSSVariable)
+      input.addEventListener('input', handleWithoutCSSVariable)
     })
 
-    img.style.position = 'relative';
-    img.style.top = spacingInput.value;
-    img.style.right = spacingInput.value;
-    img.style.backgroundColor = baseColorInput.value;
-    JS.style.color = baseColorInput.value;
-    img.style.filter = `blur(${blurInput.value}px)`;
-
-    function changeCSSVariable(ev) {
+    function handleWithoutCSSVariable(ev) {
       const eventType = ev.target.id;
 
       switch(eventType) {
         case 'spacing':
-          img.style.position = 'relative';
-          img.style.top = spacingInput.value;
-          img.style.left = spacingInput.value;
+          img.style.padding = `${spacingInput.value}px`;
           break;
         case 'blur':
           img.style.filter = `blur(${blurInput.value}px)`
@@ -83,8 +84,6 @@
           break;
       }
     }
-
-    console.log(spacingInput.value, blurInput.value, baseColorInput.value, JS)
   </script>
 </body>
 </html>
