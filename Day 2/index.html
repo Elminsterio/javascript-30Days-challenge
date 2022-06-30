@@ -60,9 +60,11 @@
       top: 50%;
       transform-origin: right;
       transform: rotate(90deg);
-      /* transition: all 0.05s;
+    }
+
+    .second-hand {
+      transition: all 0.05s;
       transition-timing-function: cubic-bezier(0.8, 2.7, 0.58, 1);
-      */
     }
 
   </style>
@@ -93,6 +95,9 @@
       hourHand.style.transform = `rotate(${hoursDegrees}deg)`
       minuteHand.style.transform =`rotate(${minutesDegrees}deg)`
       secondHand.style.transform = `rotate(${secondsDegrees}deg)`
+
+      if(secondsDegrees >= 444) secondHand.style.transition = undefined;
+      else secondHand.style.transition = 'all 0.05s';
     }
 
   </script>
