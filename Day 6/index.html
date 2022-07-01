@@ -39,7 +39,7 @@
       })
     }
 
-    const regex = new RegExp(inputPlace, 'gi');
+    const regex = new RegExp(`(${inputPlace})`, 'gi');
     const result = placesList.filter(place => {
       return place.city.match(regex) || place.state.match(regex);
     });
@@ -47,8 +47,8 @@
     if(!result.length || !inputPlace) return;
     
     const placeElement = result.map(place => {
-      const citySpan = place.city.replace(regex, `<span class="hl">${inputPlace}</span>`);
-      const stateSpan = place.state.replace(regex, `<span class="hl">${inputPlace}</span>`);
+      const citySpan = place.city.replace(regex, `<span class="hl">$1</span>`);
+      const stateSpan = place.state.replace(regex, `<span class="hl">$1</span>`);
       return `
         <li>
           <span class="name">${citySpan}, ${stateSpan}</span>
@@ -71,7 +71,7 @@
   let cities;
   let searchCityDebouncer = exeDebouncer(searchCityAndAppend);
   
-  searchInput.addEventListener('input', async function (ev) {
+  searchInput.addEventListener('input', async function(ev) {
     if(!cities) cities = await getCities(endpoint);
     await searchCityDebouncer([cities, this.value]);
   })
