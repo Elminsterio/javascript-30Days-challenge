@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+  const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  const searchInput = document.querySelector('.search');
+  const form = document.querySelector('.search-form');
+  const suggestions = document.querySelector('.suggestions');
+
+  async function getCities(url) {
+    try {
+      const response = await fetch(url);
+      return await response.json();
+    } catch(error) {
+      console.error(error);
+    }
+  }
+
+  function searchCityAndAppend(placesList, inputPlace) {
+    const lastPlaces = document.querySelectorAll('.suggestions li');
+
+    if(lastPlaces.length) {
+      Array.from(lastPlaces).forEach((place, index) => {
+        if(index < 2) return;
+        place.remove();
+      })
+    }
+
+    const regex = new RegExp(inputPlace, 'gi');
+    const result = placesList.filter(place => {
+      return place.city.match(regex) || place.state.match(regex);
+    });
+
+    if(!result.length || !inputPlace) return;
+    
+    const placeElement = result.map(place => {
+      const citySpan = place.city.replace(regex, `<span class="hl">${inputPlace}</span>`);
+      const stateSpan = place.state.replace(regex, `<span class="hl">${inputPlace}</span>`);
+      return `
+        <li>
+          <span class="name">${citySpan}, ${stateSpan}</span>
+          <span class="population">${place.population}</span>
+        </li>
+      `
+    }).join('');
+    suggestions.innerHTML += placeElement;
+  }
+
+
+  function exeDebouncer(func, timeout = 300){
+    let timer;
+    return function (...args) {
+      if(timer) clearTimeout(timer);
+      timer = setTimeout(() => {func.apply(this, ...args)}, timeout);
+    }
+  }
+
+  let cities;
+  let searchCityDebouncer = exeDebouncer(searchCityAndAppend);
+  
+  searchInput.addEventListener('input', async function (ev) {
+    if(!cities) cities = await getCities(endpoint);
+    await searchCityDebouncer([cities, this.value]);
+  })
+
+  form.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+  });
+
+</script>
+</body>
+</html>
