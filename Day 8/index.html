@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+  const canvas = document.querySelector('canvas');
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+  const ctx = canvas.getContext('2d');
+
+  let startWrite = false;
+  let color = 0;
+  let widthL = 100;
+  let isAdd = false;
+  let mouseCoords = {
+    x: 0,
+    y: 0
+  };
+
+  function draw(ev) {
+    if(!startWrite) return;
+
+    ctx.beginPath();
+
+    color++;
+    if(color >= 360) color = 0;
+    ctx.strokeStyle = `hsl(${color}, 100%, 50%)`;
+
+    if(widthL <= 0) isAdd = true;
+    if(widthL >= 100) isAdd = false;
+    if(isAdd) widthL++;
+    else widthL--;
+  
+    ctx.lineWidth = widthL;
+    ctx.lineCap = "round";
+    ctx.moveTo(mouseCoords.x, mouseCoords.y);
+    ctx.lineTo(ev.offsetX, ev.offsetY);
+    ctx.stroke();
+
+    mouseCoords.x = ev.offsetX;
+    mouseCoords.y = ev.offsetY;
+  }
+
+  canvas.addEventListener('mousedown', ev => {
+    mouseCoords.x = ev.offsetX;
+    mouseCoords.y = ev.offsetY;
+    startWrite = true;
+  })
+  
+  canvas.addEventListener('mousemove', draw)
+  canvas.addEventListener('mouseout', ev => startWrite = false);
+  canvas.addEventListener('mouseup', ev => startWrite = false);
+
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+</style>
+
+</body>
+</html>
