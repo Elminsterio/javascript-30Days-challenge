@@ -95,48 +95,28 @@
     </div>
   </div>
 <script>
-  const checkBoxesArr = Array.from(document.querySelectorAll('.item input'));
+  const checkBoxes = document.querySelectorAll('.item input');
 
-  let initialBox;
-  let lastBox;
-  
-  function checkMultipleElements(ev, index) {
+  let lastChecked;
+  function checkMultipleElements(ev) {
 
-    if(!isShiftPressed) {
-      initialBox = index;
-      return;
-    };
+    let inBetween = false;
+    if(ev.shiftKey && this.checked) {
 
-    lastBox = index;
-    if(initialBox === lastBox) return;
-
-    if(initialBox > lastBox) {
-      for(let i = lastBox; initialBox >= i; i++){
-        checkBoxesArr[i].checked = true;
-      }
-    } else {
-      for(let i = initialBox; lastBox >= i; i++){
-        checkBoxesArr[i].checked = true;
-      }
+      checkBoxes.forEach(checkbox => {
+        if(checkbox === this || checkbox === lastChecked) {
+          inBetween = !inBetween;
+        }
+        if(inBetween) {
+          checkbox.checked = true;
+        }
+      })
     }
-    
-    initialBox = index;
+    lastChecked = this;
   }
 
-  checkBoxesArr.forEach((checkBox, index) => {
-    checkBox.addEventListener('change', (ev) => checkMultipleElements.call(this, ev, index));
-  })
-
-  let isShiftPressed = false;
-  document.addEventListener('keydown', ({keyCode}) => {
-    if(keyCode !== 16) return;
-    isShiftPressed = true;
-  })
-
-  document.addEventListener('keyup', ({keyCode}) => {
-    if(keyCode !== 16) return;
-    isShiftPressed = false;
-    initialBox = undefined;
+  checkBoxes.forEach((checkBox, index) => {
+    checkBox.addEventListener('click', checkMultipleElements);
   })
 
 </script>
