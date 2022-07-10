@@ -46,7 +46,7 @@
 
     const slides = document.querySelectorAll('.slide-in');
 
-    function debounce(func, wait = 20, immediate = true) {
+    function debounce(func, wait = 10, immediate = true) {
       var timeout;
       return function() {
         var context = this, args = arguments;
@@ -65,7 +65,7 @@
       slides.forEach(slide => {
         const slideInAt = (scrollY + innerHeight) - slide.height / 2;
         const imageBottom = slide.offsetTop + slide.height;
-
+        console.log(scrollY, innerHeight, slide.offsetTop, imageBottom, slideInAt)
         const isHalfShown = slideInAt > slide.offsetTop;
         const isNotScrolledPast = scrollY < imageBottom;
 
