@@ -38,7 +38,7 @@
 <script>
   const hero = document.querySelector('.hero');
   const text = hero.querySelector('h1');
-  const WALK = 30;
+  const WALK = 500;
 
   function shadow(ev) {
     const { offsetWidth: width, offsetHeight: height } = this;
@@ -49,8 +49,11 @@
       y += ev.target.offsetTop; 
     } 
 
-    const xWalk = Math.round((x / width * WALK) - (WALK / 2));
-    const yWalk = Math.round((y / height * WALK) - (WALK / 2));
+    // Se resta la mitad de WALK porque queremos crear un eje de coordenadas cartesianas con números negativos.
+    // Se divide x entre el ancho para pasarlo a decimal y se multiplica por la cantidad de unidades que queremos de base.
+
+    const xWalk = Math.round(((x / width) * WALK) - (WALK / 2));
+    const yWalk = Math.round(((y / height) * WALK) - (WALK / 2));
 
     text.style.textShadow = `
       ${xWalk}px ${yWalk}px 0 rgba(28,22,22,0.33)
