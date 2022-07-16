@@ -28,14 +28,18 @@
     // one way
 
     // or create a new array and concat the old one in
-    const newPlayers = new Array(players);
+    const newPlayers = new Array().concat(players);
     // or use the new ES6 Spread
     const newPlayers2 = [...players];
     // now when we update it, the original one isn't changed
     newPlayers.pop();
     // The same thing goes for objects, let's say we have a person object
     console.log(players);
-    console.log(newPlayers)
+    console.log(newPlayers);
+
+    // But if we need a deep copy, we should do it with JSON.stringify and parse.active
+    const newPlayers3 = JSON.parse(JSON.stringify(players));
+
     // with Objects
     const person = {
       name: 'Wes Bos',
@@ -65,14 +69,14 @@
     const person4 = JSON.parse(JSON.stringify(person));
     person4.friend.name = 'Mico';
     person4.friend['age'] = 20;
-    // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
 
     console.log(person);
     console.log(person2);
     console.log(person3);
     console.log(person4);
-    
 
+    // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
+    // Alert! Careful in both cases because with JSON solution! It doesn't work with values not compatible with JSON.
   </script>
 
 </body>
