@@ -40,8 +40,7 @@
       highlighted.style.height = `${measures.height}px`;
       // highlighted.style.top = `${measures.top + scrollY}px`;
       // highlighted.style.left = `${measures.left}px`;
-      highlighted.style.transform = `translate(${measures.left}px, ${measures.top + scrollY}px)`
-
+      highlighted.style.transform = `translate(${measures.left + scrollX}px, ${measures.top + scrollY}px)`
     }
 
     links.forEach((link) => {
